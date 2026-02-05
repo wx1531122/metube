@@ -10,6 +10,7 @@ dependencies = [
     "mutagen",
     "curl-cffi",
     "watchfiles",
+    "python-telegram-bot>=22.6",
 ]
 
 [dependency-groups]

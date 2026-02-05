@@ -18,6 +18,7 @@ from watchfiles import DefaultFilter, Change, awatch
 
 from ytdl import DownloadQueueNotifier, DownloadQueue
 from yt_dlp.version import __version__ as yt_dlp_version
+from telegram_bot import TelegramBot
 
 log = logging.getLogger('main')
 
@@ -72,6 +73,8 @@ class Config:
         'MAX_CONCURRENT_DOWNLOADS': 3,
         'LOGLEVEL': 'INFO',
         'ENABLE_ACCESSLOG': 'false',
+        'TELEGRAM_BOT_TOKEN': '',
+        'TELEGRAM_ALLOWED_USER_IDS': '',
     }
 
     _BOOLEAN = ('DOWNLOAD_DIRS_INDEXABLE', 'CUSTOM_DIRS', 'CREATE_CUSTOM_DIRS', 'DELETE_FILE_ON_TRASHCAN', 'HTTPS', 'ENABLE_ACCESSLOG')
@@ -179,6 +182,12 @@ class Notifier(DownloadQueueNotifier):
 
 dqueue = DownloadQueue(config, Notifier())
 app.on_startup.append(lambda app: dqueue.initialize())
+
+# Initialize Telegram Bot
+if config.TELEGRAM_BOT_TOKEN:
+    telegram_bot = TelegramBot(config.TELEGRAM_BOT_TOKEN, config.TELEGRAM_ALLOWED_USER_IDS, dqueue)
+    app.on_startup.append(lambda app: telegram_bot.start())
+    app.on_cleanup.append(lambda app: telegram_bot.stop())
 
 class FileOpsFilter(DefaultFilter):
     def __call__(self, change_type: int, path: str) -> bool:
