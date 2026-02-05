@@ -66,6 +66,16 @@ RUN BGUTIL_TAG="$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com
     unzip -q /tmp/bgutil-ytdlp-pot-provider-rs.zip -d "${PLUGIN_DIR}" && \
     rm /tmp/bgutil-ytdlp-pot-provider-rs.zip
 
+RUN XRAY_TAG="$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/XTLS/Xray-core/releases/latest | sed 's#.*/tag/##')" && \
+    curl -L -o /tmp/xray.zip \
+      "https://github.com/XTLS/Xray-core/releases/download/${XRAY_TAG}/Xray-linux-64.zip" && \
+    unzip -q /tmp/xray.zip -d /tmp/xray && \
+    mv /tmp/xray/xray /usr/local/bin/ && \
+    mv /tmp/xray/*.dat /usr/local/bin/ && \
+    rm -rf /tmp/xray /tmp/xray.zip && \
+    chmod +x /usr/local/bin/xray && \
+    mkdir -p /etc/xray
+
 COPY app ./app
 COPY --from=builder /metube/dist/metube ./ui/dist/metube
 

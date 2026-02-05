@@ -80,6 +80,10 @@ Certain values can be set via environment variables, using the `-e` parameter on
 * __LOGLEVEL__: Log level, can be set to `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`, or `NONE`. Defaults to `INFO`. 
 * __ENABLE_ACCESSLOG__: Whether to enable access log. Defaults to `false`.
 
+### 🛡️ VPN / Proxy Support (Xray)
+
+* __VPN_SUBSCRIPTION_URL__: A URL to a subscription feed (VMess/VLESS) or a base64 encoded list of nodes. If set, MeTube will automatically fetch the subscription, configure Xray-core, and route all traffic through the first available node. This is useful for bypassing IP blocks or hiding your server's IP.
+
 The project's Wiki contains examples of useful configurations contributed by users of MeTube:
 * [YTDL_OPTIONS Cookbook](https://github.com/alexta69/metube/wiki/YTDL_OPTIONS-Cookbook)
 * [OUTPUT_TEMPLATE Cookbook](https://github.com/alexta69/metube/wiki/OUTPUT_TEMPLATE-Cookbook)
